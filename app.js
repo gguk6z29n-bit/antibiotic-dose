@@ -284,3 +284,6 @@ const nav=document.querySelector('.quick-nav');
 if(nav){const a=document.createElement('a');a.href='#doseDatabase';a.textContent='出典比較';nav.appendChild(a);}
 renderDatabase();
 
+
+['drug','disease','rrt','sex','adminRoute','mssaStatus','pseudoStatus'].forEach(id=>document.getElementById(id).addEventListener('change',()=>renderDatabase()));
+['age','height','weight','scr','manualCrcl','absoluteGfr'].forEach(id=>document.getElementById(id).addEventListener('input',()=>renderDatabase()));
