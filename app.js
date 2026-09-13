@@ -214,3 +214,33 @@ document.getElementById('clearPatient').addEventListener('click',()=>{
  result.innerHTML='<div class="warn">患者情報を入力してください。出典PDFは引き続き参照できます。</div>';
  document.getElementById('mssaStatus').value='unknown';document.getElementById('pseudoStatus').value='unknown';renderReference();renderDatabase();renderHospital();document.getElementById('clearMessage').textContent='患者情報を消去しました。';
 });
+
+// Compare using the same adopted rules as the recommendation panel.
+const renderDatabaseBeforeConnection=renderDatabase;
+function connectedShirasagiHtml(){
+ const {adult,c}=hospitalInput();
+ const matches=chooseHospital(drug.value,rrt.value,c,adult).filter(r=>r.source==='shirasagi');
+ const escape=escapeReference;
+ const sourceById=new Map(doseDatabase.records.map(r=>[r.id,r]));
+ const range=r=>r.rrt!=='none'?({ihd:'IHD',pd:'PD',crrt:'CRRT'}[r.rrt]||r.rrt):`${r.metric||'CCr'} ${r.min==null?'':(r.includeMin?'≧':'＞')+r.min+' '}${r.max==null?'':(r.includeMax?'≦':'＜')+r.max} mL/min`;
+ return `<div class="rec"><h3>白鷺病院：入力条件に一致する院内採用ルール</h3><p class="source">上の院内推奨と同じ条件で照合しています。院内指定の基準量・境界・指標変更を含み、原資料そのものの数値区分とは区別します。</p>${matches.length?matches.map(r=>{const source=sourceById.get(r.sourceRecord);return `<article style="border-bottom:1px solid #d8e2ec;padding:12px 0"><b>${escape(range(r))} ／ ${escape(r.route)}</b><div class="dose">${escape(r.dose)}</div><p class="notes">${escape(r.note||'')}</p><details><summary>対応する原資料の記載</summary><p class="notes">${escape(source?.regimen||'原資料レコードを確認してください。')}</p></details><p class="source">院内ルール ${escape(r.id)} → 原資料 ${escape(r.sourceRecord)} ／ PDF p.${escape(r.page)}</p><button class="secondary" onclick="openReferencePdf('${r.drug}')">根拠PDFを開く</button></article>`;}).join(''):'<p>現在の条件では白鷺病院由来の院内採用ルールは一致していません。患者情報・疾患・投与経路・菌種・腎機能指標を確認してください。未登録条件は下の原資料を参照してください。</p>'}</div>`;
+}
+renderDatabase=function(){
+ renderDatabaseBeforeConnection();
+ const panel=document.getElementById('doseDatabase');
+ const block=document.createElement('div');block.id='connectedShirasagi';block.innerHTML=connectedShirasagiHtml();
+ panel.prepend(block);
+ // Raw excerpts are reference text, not a second conflicting numeric matcher.
+ panel.querySelectorAll('.rec').forEach(card=>{
+  if(card.closest('#connectedShirasagi'))return;
+  if(card.querySelector('h3')?.textContent.startsWith('白鷺病院')){
+   card.querySelectorAll('p').forEach(p=>{if(p.textContent==='自動照合できる登録用量はありません。以下の資料記載を確認してください。')p.textContent='原資料の文章を以下に表示します。採用済みの条件照合結果は上の「白鷺病院：入力条件に一致する院内採用ルール」を参照してください。';});
+  }
+ });
+};
+const renderHospitalBeforeConnection=renderHospital;
+renderHospital=function(){renderHospitalBeforeConnection();renderDatabase();};
+['drug','disease','rrt','sex','adminRoute','mssaStatus','pseudoStatus'].forEach(id=>document.getElementById(id).addEventListener('change',renderDatabase));
+['age','height','weight','scr','manualCrcl','absoluteGfr'].forEach(id=>document.getElementById(id).addEventListener('input',renderDatabase));
+renderDatabase();
+
