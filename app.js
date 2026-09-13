@@ -196,18 +196,6 @@ calculate=function(){calculateWithSources();renderHospital()};
 ['drug','disease','rrt','sex','adminRoute','mssaStatus','pseudoStatus'].forEach(id=>document.getElementById(id).addEventListener('change',renderHospital));
 ['age','height','weight','scr','manualCrcl','effluent','absoluteGfr'].forEach(id=>document.getElementById(id).addEventListener('input',renderHospital));
 renderHospital();
-const pendingQuestions=[{"id": "C01", "title": "LVFX：CCr 49超～50未満", "detail": "現在この範囲だけ確認待ち。20～49と同じ扱いにするか、別ルールにするか。", "answer": "OK：49超～50未満は下側", "status": "反映済み", "basis": "院内指示 2026-09-13"}, {"id": "C02", "title": "CEZ：非透析", "detail": "白鷺病院の主欄はGFRと「常用量」で記載。採用する腎機能指標、疾患別の基準1回量、区分ごとの間隔を指定。", "answer": "CCr。MSSA 2 g、その他1 g。>50：8時間ごと、10～50：12時間ごと、<10：24～48時間ごと。採用確認済み", "status": "反映済み", "basis": "院内指示 2026-09-13"}, {"id": "C03", "title": "CTX：非透析", "detail": "主欄はGFRで記載。GFRを別入力にするか、CCrを用いた別の出典レコードを採用するか。", "answer": "GFRを別入力", "status": "反映済み", "basis": "院内指示 2026-09-13"}, {"id": "C04", "title": "TAZ/PIPC：非透析", "detail": "緑膿菌の有無で用量が異なる。菌種条件とCCr 40の重複する境界をどう扱うか。", "answer": "緑膿菌の有無で選択、CCr 40は下側", "status": "反映済み", "basis": "院内指示 2026-09-13"}, {"id": "C05", "title": "TAZ/PIPC：IHD", "detail": "通常の透析用量と体重65 kg以上の別案、HD実施3時間以上前の投与条件をどう採用するか。", "answer": "体重による分岐なし", "status": "反映済み", "basis": "院内指示 2026-09-13"}, {"id": "C06", "title": "CTRX：非透析・IHD", "detail": "「高度腎障害」の定義、通常量と上限量、IHDでの1 g/日・2 g短期間の扱いを指定。", "answer": "注意書きとして保持", "status": "反映済み", "basis": "院内指示 2026-09-13"}, {"id": "C07", "title": "PCG：非透析・IHD", "detail": "疾患別の基準量（単位）、GFRによる減量率、IHDでの20～50％の採用方法を指定。", "answer": "心内膜炎・髄膜炎を別表示", "status": "一部確認待ち", "basis": "PCG：腎機能別減量率の適用、一般感染症の静注基準量は確認待ち。"}, {"id": "C08", "title": "CPZ：非透析・IHD", "detail": "「減量不要」の基準量と肝障害時の扱いを指定。2018年資料の製造中止記載があるため院内での採用品も確認。", "answer": "", "status": "未回答", "basis": "院内採用品・基準量・肝障害時の扱い。"}, {"id": "C09", "title": "SBT/CPZ：非透析・IHD", "detail": "「常用量」を具体化するため基準1回量・回数と肝障害時の扱いを指定。", "answer": "", "status": "未回答", "basis": "基準1回量・回数・肝障害時の扱い。"}, {"id": "C10", "title": "DAP：非透析・IHD", "detail": "感染症による4／6 mg/kg、使用体重、負荷量、48時間ごと／週3回HD後の採用条件を指定。", "answer": "", "status": "未回答", "basis": "疾患別量・使用体重・負荷量・HDスケジュール。"}, {"id": "C11", "title": "ST合剤：非透析・IHD", "detail": "治療／予防と対象疾患、製剤、TMP成分量、基準量、重度腎障害時に使用する条件を指定。", "answer": "", "status": "未回答", "basis": "治療／予防、製剤、TMP基準量、重度腎障害時条件。"}, {"id": "C12", "title": "VCM：非透析・IHD", "detail": "腎機能指標、負荷量・維持量、使用体重、HD前／後／中の条件とTDMによる再設定方針を指定。", "answer": "現状維持。後日TDMガイドライン添付", "status": "一部確認待ち", "basis": "TDM資料待ち。"}, {"id": "C13", "title": "TEIC：非透析・IHD", "detail": "標準化eGFR等の指標、負荷スケジュール・維持量、目標濃度とTDM方針を指定。", "answer": "現状維持。後日TDMガイドライン添付", "status": "一部確認待ち", "basis": "TDM資料待ち。"}, {"id": "C14", "title": "LZD：非透析", "detail": "開始量の採用と血小板減少・腎機能低下時の減量判断を指定。IHD開始量は登録済みだが減量判断は自動化していない。", "answer": "減量を考慮と記載", "status": "反映済み", "basis": "院内指示 2026-09-13"}, {"id": "C15", "title": "疾患別ルール：全薬剤", "detail": "髄膜炎・感染性心内膜炎・FNは自動表示対象外。薬剤ごとに基準量と適用条件を指定。一般感染症の幅がある用量も範囲表示か選択条件を指定。", "answer": "範囲のまま", "status": "一部確認待ち", "basis": "範囲表示は採用済み。薬剤別の髄膜炎・心内膜炎・FNの適用量は未確定。"}, {"id": "C16", "title": "PD・CRRT：全薬剤", "detail": "現在は自動推奨未登録。PDは全身感染／腹膜炎、経路、CAPD／APD等を区別。CRRTは方式・排液量・残存腎機能・TDMの条件を指定。", "answer": "CVVHD。院内流量を考慮したクリアランス約10 mL/min", "status": "一部確認待ち", "basis": "CVVHDの実流量、推定クリアランスの対象薬剤と適用条件を確認待ち。PDの方式・経路別ルールも未確定。"}, {"id": "C17", "title": "SBT/ABPC：原資料のAMPC表記", "detail": "白鷺病院PDFの一部にAMPCと記載。引用元を確認し訂正するか、その記載を採用しないか。", "answer": "AMPC表記は確認済み", "status": "反映済み", "basis": "院内指示 2026-09-13"}, {"id": "C18", "title": "SBT/CPZ：PDのCPZ単剤表記", "detail": "PD欄はCPZとしての用量。合剤へ流用せず、合剤の別根拠を指定するか確認待ちを継続。", "answer": "CPZ成分として表示", "status": "一部確認待ち", "basis": "CPZ成分のみ表示。SBT/CPZ合剤への換算は未確定。"}, {"id": "C19", "title": "JAID/JSC：CCr 10・50の境界", "detail": "ABPC、SBT/ABPC、TAZ/PIPC、CEZ、CFPMの比較レコードの境界。白鷺病院の院内ルールとは別に取り扱いを指定。", "answer": "10・50は下側", "status": "反映済み", "basis": "院内指示 2026-09-13"}, {"id": "C20", "title": "初回量・投与タイミングの個別判断", "detail": "CFPM IHDの初回1 gの選択、MEPM IHDの初回0.5～1 g、ABPC IHDの投与タイミング、LVFX IHDの投与日程などを確定するか、注記のまま残すか。", "answer": "注記で対応", "status": "反映済み", "basis": "院内指示 2026-09-13"}];
-const pendingPanel=document.createElement('section');pendingPanel.className='panel';pendingPanel.id='pendingDecisions';
-document.querySelector('main').appendChild(pendingPanel);
-pendingPanel.innerHTML=`<div class="title">確認事項・対応策の記入（${pendingQuestions.length}項目）</div><p class="notes">対応策を入力して「まとめてコピー」し、この会話に貼り付けてください。「確認待ち継続」でも構いません。入力だけでは院内用量ルールは変更されません。ページを閉じる前にコピーまたは保存してください。患者情報は書かないでください。</p><button id="copyDecisions">まとめてコピー</button> <button id="saveDecisions" class="secondary">回答をテキスト保存</button><p id="decisionStatus" role="status"></p>${pendingQuestions.map(q=>`<details open style="margin-top:16px"><summary><b>${escapeReference(q.id+' '+q.title+' ［'+q.status+'］')}</b></summary><p class="notes">${escapeReference(q.detail)}</p><label for="answer-${q.id}">対応策</label><textarea id="answer-${q.id}" rows="3" style="width:100%;font:inherit;padding:10px;border:1px solid #b9c6d3;border-radius:6px" placeholder="採用する用量・条件、現状維持、確認待ち継続など">${escapeReference(q.answer||'')}</textarea><label for="basis-${q.id}">根拠・補足（任意）</label><textarea id="basis-${q.id}" rows="2" style="width:100%;font:inherit;padding:10px;border:1px solid #b9c6d3;border-radius:6px">${escapeReference(q.basis||'')}</textarea></details>`).join('')}<label for="decisionExport">コピー用全文（直接選択してコピーも可能）</label><textarea id="decisionExport" rows="8" readonly style="width:100%;font:inherit"></textarea>`;
-function decisionText(){return pendingQuestions.map(q=>`${q.id} ${q.title}\n確認事項：${q.detail}\n対応策：${document.getElementById('answer-'+q.id).value}\n根拠・補足：${document.getElementById('basis-'+q.id).value}`).join('\n\n');}
-function updateDecisionExport(){document.getElementById('decisionExport').value=decisionText();}
-pendingPanel.addEventListener('input',updateDecisionExport);
-document.getElementById('copyDecisions').addEventListener('click',async()=>{updateDecisionExport();const field=document.getElementById('decisionExport');try{await navigator.clipboard.writeText(field.value);document.getElementById('decisionStatus').textContent='コピーしました。この会話に貼り付けてください。';}catch{field.focus();field.select();document.getElementById('decisionStatus').textContent='下の全文を選択しました。手動でコピーするか、テキスト保存をご利用ください。';}});
-document.getElementById('saveDecisions').addEventListener('click',()=>{const url=URL.createObjectURL(new Blob([decisionText()],{type:'text/plain;charset=utf-8'}));const a=document.createElement('a');a.href=url;a.download='院内推奨_対応策.txt';a.click();setTimeout(()=>URL.revokeObjectURL(url),60000);});
-updateDecisionExport();
-
-
 document.getElementById('clearPatient').addEventListener('click',()=>{
  ['age','height','weight','scr','manualCrcl','absoluteGfr'].forEach(id=>document.getElementById(id).value='');
  ['crcl','ibw','adjbw','bsa'].forEach(id=>document.getElementById(id).textContent='—');
@@ -242,5 +230,57 @@ const renderHospitalBeforeConnection=renderHospital;
 renderHospital=function(){renderHospitalBeforeConnection();renderDatabase();};
 ['drug','disease','rrt','sex','adminRoute','mssaStatus','pseudoStatus'].forEach(id=>document.getElementById(id).addEventListener('change',renderDatabase));
 ['age','height','weight','scr','manualCrcl','absoluteGfr'].forEach(id=>document.getElementById(id).addEventListener('input',renderDatabase));
+renderDatabase();
+
+
+function referenceAssessment(r){
+ const p=hospitalInput(),route=document.getElementById('adminRoute').value;
+ if(r.rrt!==rrt.value)return '別の透析条件・通常用量・補足';
+ if(!p.adult)return '成人の年齢を入力してください';
+ let routes=r.route==='静注'?['iv']:r.route==='経口'?['po']:r.route.includes('経口／静注')?['iv','po']:[];
+ if(!routes.length&&r.regimen.startsWith('静注：'))routes=['iv'];
+ if(!routes.length&&r.regimen.startsWith('経口：'))routes=['po'];
+ if(routes.length&&!routes.includes(route))return '選択した投与経路とは異なります';
+ if(['感染性心内膜炎','髄膜炎・中枢神経感染症','発熱性好中球減少症'].includes(disease.value))return 'この疾患への適用量は未確認です（一般用量から自動適用しません）';
+ if(!routes.length)return '原資料の投与経路・適用条件を確認してください';
+ if(r.rrt==='none'){
+  if(!r.renal)return '用量の記載はありますが、腎機能の数値条件・基準量・TDM等が未登録です';
+  const value=r.renal.metric==='GFR'?p.g:r.renal.metric==='CCr'?p.c:NaN;
+  if(!Number.isFinite(value)||value<0)return (r.renal.metric||'腎機能')+'の有効な値を入力してください';
+  const n=r.renal;
+  if(n.exact?!n.exact.includes(value):!((n.min==null||(n.includeMin?value>=n.min:value>n.min))&&(n.max==null||(n.includeMax?value<=n.max:value<n.max))))return '入力した腎機能とは別の区分です';
+ }
+ if(r.status!=='原表と転記照合済み')return '数値条件は該当しますが、基準量・適用条件の確認が必要です';
+ return '';
+}
+renderDatabase=function(){
+ const existing=document.getElementById('sourceDatabaseToggle');
+ const opened=existing?existing.open:false;
+ const records=doseDatabase.records.filter(r=>r.drug===drug.value);
+ let body=connectedShirasagiHtml();
+ for(const [id,source] of Object.entries(doseDatabase.sources)){
+  const all=records.filter(r=>r.source===id),current=all.filter(r=>r.rrt===rrt.value);
+  body+=`<div class="rec"><h3>${escapeReference(source.title)} ／ ${escapeReference(source.edition)}</h3>`;
+  if(id==='shirasagi'){
+   body+='<p>原資料の記載。院内採用ルールとの照合結果は上に表示しています。</p>';
+  }else{
+   const matching=current.filter(r=>!referenceAssessment(r));
+   if(matching.length)body+='<b>腎機能・透析条件・経路が一致する参考用量（疾患別適用は個別確認）</b>'+matching.map(databaseCard).join('');
+   else body+='<p>'+(!all.length?'この薬剤の比較レコードは未登録です。':!current.length?'選択した透析条件の比較レコードは未登録です。':'以下に用量の記載と、照合を保留している理由を表示します。')+'</p>';
+   const pending=current.filter(r=>referenceAssessment(r));
+   body+=pending.map(r=>`<details><summary>${escapeReference(referenceAssessment(r))}</summary>${databaseCard(r)}</details>`).join('');
+  }
+  const extra=id==='shirasagi'?all:all.filter(r=>r.rrt!==rrt.value);
+  if(extra.length)body+=`<details><summary>${id==='shirasagi'?'原資料の用量・注意点とPDF':'別の透析条件・通常用量・補足'}（${extra.length}件）</summary>${extra.map(databaseCard).join('')}</details>`;
+  if(id==='shirasagi')body+=`<button class="secondary" onclick="openReferencePdf('${drug.value}')">白鷺病院の原資料PDFを開く</button>`;
+  body+='</div>';
+ }
+ databasePanel.innerHTML=`<details id="sourceDatabaseToggle" ${opened?'open':''}><summary class="title">出典別の用量データベース（開く／閉じる）</summary><p class="notes">原資料と院内採用ルールを区別して表示します。CCrとGFRは自動換算しません。比較用量は院内推奨への自動採用ではありません。</p>${body}</details>`;
+};
+referencePanel.remove();
+document.getElementById('pendingDecisions')?.remove();
+document.querySelectorAll('a[href="#references"],a[href="#pendingDecisions"]').forEach(a=>a.remove());
+const nav=document.querySelector('.quick-nav');
+if(nav){const a=document.createElement('a');a.href='#doseDatabase';a.textContent='出典比較';nav.appendChild(a);}
 renderDatabase();
 
